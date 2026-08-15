@@ -17,8 +17,12 @@ import { KordocError, sanitizeHref } from "../utils.js"
 import { parsePageRange } from "../page-range.js"
 
 import { createRequire } from "module"
-const require = createRequire(import.meta.url)
-const CFB: CfbModule = require("cfb")
+// ESM 번들에서는 import.meta.url이, CJS 번들에서는 __filename이 채워진다.
+// 한쪽만 보면 반대 포맷에서 createRequire(undefined)가 즉시 예외를 던진다.
+const cfbRequire = createRequire(
+  typeof __filename !== "undefined" ? __filename : import.meta.url,
+)
+const CFB: CfbModule = cfbRequire("cfb")
 
 interface CfbEntry { name?: string; content?: Buffer | Uint8Array }
 interface CfbContainer { FileIndex?: CfbEntry[] }

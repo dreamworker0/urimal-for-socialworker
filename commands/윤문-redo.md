@@ -18,9 +18,14 @@ argument-hint: [재처리 지시사항 — 예: "이 문단만 다시", "사업�
 /윤문-redo "2차 윤문해줘"
 ```
 
-## 처리 분기
+## 직전 run의 모드 판별 (먼저 수행)
 
-가장 최근 `_workspace/{run_id}/`을 찾아 다음 분기로 진입한다.
+가장 최근 `_workspace/{run_id}/`을 찾은 뒤, **그 run이 fast였는지 strict였는지 먼저 확인한다.** 아래 분기표는 strict 산출물(탐지 JSON·`03_rewrite.md`·`summary.md`)이 있어야 그대로 적용된다.
+
+- `02a_sw_detection.json`이 **있으면** → strict run. 아래 분기표대로 해당 Phase만 재호출한다.
+- `02a_sw_detection.json`이 **없으면** → fast run (산출물은 `01_input.txt`·`final.md` 뿐). 재호출할 중간 산출물이 없으므로 **`01_input.txt`를 입력으로 strict 모드 전체를 새로 실행**한다(오케스트레이터의 부분 재실행 → strict 자동 승급 규칙과 동일). 사용자에게 "직전 결과가 fast 모드라 정밀 재처리를 위해 strict로 다시 돌립니다" 한 줄을 고지한다.
+
+## 처리 분기 (strict run 기준)
 
 | 사용자 지시 | 처리 |
 |------------|------|
@@ -33,6 +38,6 @@ argument-hint: [재처리 지시사항 — 예: "이 문단만 다시", "사업�
 
 ## 출력
 
-- 새 결과는 `_workspace/{run_id}/03_rewrite_v2.md` 또는 새 run의 `final.md`로 저장
-- `summary.md`에 변경 이력 누적 기록
-- 사용자에게 변경된 부분 diff와 변경률 보고
+- strict run을 부분 재호출한 경우: `_workspace/{run_id}/03_rewrite_v2.md`, 그리고 같은 run의 `summary.md`에 변경 이력 누적 기록
+- fast run에서 승급했거나 "2차 윤문"으로 새 run을 시작한 경우: 새 `_workspace/{run_id}/`에 strict 산출물 일습(`final.md` + `summary.md`)을 생성
+- 두 경우 모두 사용자에게 변경된 부분 diff와 변경률을 보고

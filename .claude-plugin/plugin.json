@@ -1,16 +1,13 @@
 {
   "name": "urimal-for-socialworker",
-  "version": "2.1.0",
-  "description": "사회복지사가 쓴 계획서·주간업무보고서를 한덕연 선생님의 우리말 36항목 기준으로 윤문해주는 6+1인 에이전트 파이프라인 + HWP·HWPX·PDF 파싱 도구.",
+  "version": "2.1.1",
+  "description": "사회복지사가 쓴 계획서·주간업무보고서를 한덕연 선생님의 우리말 36항목 + 사회복지 14개 카테고리 + AI 티 기준으로 윤문하는 스킬. Fast Path(monolith 1콜) 디폴트, Strict(6+1인 파이프라인) 옵션. HWP·HWPX·PDF 파싱 도구 동봉.",
   "author": {
     "name": "dreamworker0",
     "url": "https://github.com/dreamworker0"
   },
   "homepage": "https://github.com/dreamworker0/urimal-for-socialworker",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dreamworker0/urimal-for-socialworker.git"
-  },
+  "repository": "https://github.com/dreamworker0/urimal-for-socialworker",
   "license": "MIT",
   "keywords": [
     "korean",
@@ -23,25 +20,5 @@
     "skill",
     "hwp",
     "hwpx"
-  ],
-  "skills": [
-    {
-      "name": "urimal-for-socialworker",
-      "path": "skills/urimal-for-socialworker"
-    },
-    {
-      "name": "kordoc",
-      "path": "skills/kordoc"
-    }
-  ],
-  "commands": [
-    {
-      "name": "윤문",
-      "path": "commands/윤문.md"
-    },
-    {
-      "name": "윤문-redo",
-      "path": "commands/윤문-redo.md"
-    }
   ]
 }

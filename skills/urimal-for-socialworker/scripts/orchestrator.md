@@ -1,6 +1,6 @@
 ---
 name: urimal-for-socialworker
-version: "2.1.0"
+version: "2.1.1"
 description: 사회복지사가 직접 쓴 계획서·주간업무보고서 등 문서를 한덕연 선생님의 우리말 36개 항목 + 사회복지 14개 카테고리 + AI 티 두 레이어로 정밀 분석하여 자연스럽고 바른 문체로 윤문하는 오케스트레이터. v2.1부터 Fast Path(monolith 1콜) 디폴트, Strict Path(6+1인 파이프라인) 옵션. 내용은 한 글자도 건드리지 않고 문체·호응·표현만 재작성하며, 최종 결과물에 변경 이유 표를 함께 제공한다. 트리거 — "윤문해줘", "문서 다듬어줘", "이 보고서 다듬어줘", "계획서 윤문", "우리말 오류 잡아줘", "사회복지 문서 교정". 후속 작업 — "특정 항목만 다시", "이 문단만", "2차 윤문" 도 모두 이 스킬.
 ---
 
@@ -19,7 +19,7 @@ description: 사회복지사가 직접 쓴 계획서·주간업무보고서 등 
 작업 시작 시 가장 먼저 다음 한 줄을 사용자에게 출력한다.
 
 ```
-urimal-for-socialworker v2.1.0 — {fast|strict} 모드 / model: {sonnet|opus} / run_id: {YYYY-MM-DD-NNN}
+urimal-for-socialworker v2.1.1 — {fast|strict} 모드 / model: {sonnet|opus} / run_id: {YYYY-MM-DD-NNN}
 ```
 
 ### 모드 결정 (자동)
@@ -29,8 +29,8 @@ urimal-for-socialworker v2.1.0 — {fast|strict} 모드 / model: {sonnet|opus} /
 - 그 외 모두 → **fast (디폴트)**
 
 ### 모델 결정
-- 사용자가 "정밀 모드"·"opus"·"최고 품질" 명시 → `model: "opus"` (`claude-opus-4-7`)
-- 그 외 → `model: "sonnet"` (`claude-sonnet-4-6`) — 사회복지 현장 비용 효율
+- 사용자가 "정밀 모드"·"opus"·"최고 품질" 명시 → `model: "opus"` (`claude-opus-5`)
+- 그 외 → `model: "sonnet"` (`claude-sonnet-5`) — 사회복지 현장 비용 효율
 
 ### run_id 결정
 - 모든 경로는 **cwd 기준**. `_workspace/{YYYY-MM-DD-NNN}/`
@@ -225,8 +225,8 @@ sw_playbook_path: resources/references/sw-rewriting-playbook.md
 ## 에이전트 호출 규칙
 
 **모든 Agent 호출은 모델을 명시한다.**
-- **기본값: `model: "sonnet"`** (`claude-sonnet-4-6`) — 비용 효율
-- **정밀 모드: `model: "opus"`** (`claude-opus-4-7`) — 사용자 요청 시 또는 중요 외부 제출 문서
+- **기본값: `model: "sonnet"`** (`claude-sonnet-5`) — 비용 효율
+- **정밀 모드: `model: "opus"`** (`claude-opus-5`) — 사용자 요청 시 또는 중요 외부 제출 문서
 
 **에이전트 정의 위치:** Claude Code가 다음 우선순위로 자동 탐색.
 1. `<cwd>/.claude/agents/` (프로젝트 로컬)
