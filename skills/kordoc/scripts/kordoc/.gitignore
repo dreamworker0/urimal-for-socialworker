@@ -1,5 +1,7 @@
 node_modules/
-dist/
+# dist/는 의도적으로 커밋한다 — 설치 환경(사회복지 현장 Windows 등)에
+# 빌드 툴체인을 요구하지 않기 위해 산출물을 동봉한다.
+# 소스를 고쳤다면 `npm run build` 후 dist/도 함께 커밋할 것.
 *.tsbuildinfo
 .DS_Store
 demo/node_modules/

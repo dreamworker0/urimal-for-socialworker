@@ -165,5 +165,5 @@ HTML 주석으로 감싸 마크다운 뷰어·웹 게시·복사 시 본문에 �
 
 ## 모델 정책
 
-- **기본**: `model: sonnet` (`claude-sonnet-4-6`) — 비용 효율
-- **정밀 모드** (사용자 요청 시): orchestrator가 `model: opus`(`claude-opus-4-7`)로 spawn
+- **기본**: `model: sonnet` (`claude-sonnet-5`) — 비용 효율
+- **정밀 모드** (사용자 요청 시): orchestrator가 `model: opus`(`claude-opus-5`)로 spawn

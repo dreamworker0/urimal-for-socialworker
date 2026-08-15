@@ -1,0 +1,35 @@
+{
+  "name": "dreamworker0",
+  "owner": {
+    "name": "dreamworker0",
+    "url": "https://github.com/dreamworker0"
+  },
+  "description": "사회복지 현장을 위한 Claude Code 플러그인 모음.",
+  "plugins": [
+    {
+      "name": "urimal-for-socialworker",
+      "source": "./",
+      "description": "사회복지사가 쓴 계획서·주간업무보고서를 한덕연 선생님의 우리말 36항목 + 사회복지 14개 카테고리 + AI 티 기준으로 윤문하는 스킬. Fast Path(monolith 1콜) 디폴트, Strict(6+1인 파이프라인) 옵션. HWP·HWPX·PDF 파싱 도구 동봉.",
+      "author": {
+        "name": "dreamworker0",
+        "url": "https://github.com/dreamworker0"
+      },
+      "homepage": "https://github.com/dreamworker0/urimal-for-socialworker",
+      "repository": "https://github.com/dreamworker0/urimal-for-socialworker",
+      "license": "MIT",
+      "category": "writing",
+      "keywords": [
+        "korean",
+        "social-work",
+        "사회복지",
+        "윤문",
+        "우리말",
+        "humanize",
+        "claude-code",
+        "skill",
+        "hwp",
+        "hwpx"
+      ]
+    }
+  ]
+}

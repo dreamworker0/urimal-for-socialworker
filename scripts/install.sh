@@ -55,7 +55,7 @@ if ! command -v claude >/dev/null 2>&1; then
 fi
 
 if [[ ${SKIP_NPM} -eq 0 ]] && ! command -v node >/dev/null 2>&1; then
-  echo "⚠️  Node.js가 필요합니다 (kordoc 파서 빌드용)." >&2
+  echo "⚠️  Node.js가 필요합니다 (kordoc 파서 실행용)." >&2
   echo "    https://nodejs.org 에서 설치하거나 --skip-npm 으로 우회하세요." >&2
   exit 1
 fi
@@ -82,7 +82,7 @@ cp "${REPO_ROOT}/commands/윤문-redo.md" "${COMMANDS_DIR}/윤문-redo.md"
 if [[ ${SKIP_NPM} -eq 0 ]]; then
   KORDOC_DIR="${SKILLS_DIR}/kordoc/scripts/kordoc"
   if [[ -f "${KORDOC_DIR}/package.json" ]]; then
-    echo "▶ kordoc 의존성 설치 중 (npm install)..."
+    echo "▶ kordoc 런타임 의존성 설치 중 (npm install — 빌드 산출물 dist/는 동봉돼 있어 빌드는 불필요)..."
     (cd "${KORDOC_DIR}" && npm install --omit=optional --silent) || {
       echo "⚠️  npm install 실패. 수동으로 'cd ${KORDOC_DIR} && npm install' 실행 필요." >&2
     }

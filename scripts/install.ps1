@@ -33,7 +33,7 @@ if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
 }
 
 if (-not $SkipNpm -and -not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Host "⚠️  Node.js가 필요합니다 (kordoc 파서 빌드용)." -ForegroundColor Yellow
+    Write-Host "⚠️  Node.js가 필요합니다 (kordoc 파서 실행용)." -ForegroundColor Yellow
     Write-Host "    https://nodejs.org 에서 설치하거나 -SkipNpm 옵션으로 우회하세요." -ForegroundColor Yellow
     exit 1
 }
@@ -67,7 +67,7 @@ Copy-Item (Join-Path $RepoRoot 'commands\윤문-redo.md') (Join-Path $CommandsDi
 if (-not $SkipNpm) {
     $KordocPkgDir = Join-Path $SkillsDir 'kordoc\scripts\kordoc'
     if (Test-Path (Join-Path $KordocPkgDir 'package.json')) {
-        Write-Host "▶ kordoc 의존성 설치 중 (npm install)..."
+        Write-Host "▶ kordoc 런타임 의존성 설치 중 (npm install — 빌드 산출물 dist/는 동봉돼 있어 빌드는 불필요)..."
         Push-Location $KordocPkgDir
         try {
             & npm install --omit=optional --silent

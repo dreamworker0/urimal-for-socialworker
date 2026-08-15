@@ -127,8 +127,8 @@ skills/urimal-for-socialworker/
 
 ### 3. 모델 정책
 
-- **기본값**: `claude-sonnet-4-6` (사회복지 현장 비용 효율)
-- **정밀 모드**: `claude-opus-4-7` — 외부 제출 보고서·시군구 제출 사업계획서. 트리거: "정밀 모드", "opus로"
+- **기본값**: `claude-sonnet-5` (사회복지 현장 비용 효율)
+- **정밀 모드**: `claude-opus-5` — 외부 제출 보고서·시군구 제출 사업계획서. 트리거: "정밀 모드", "opus로"
 
 ### 4. HWP·HWPX 입력
 

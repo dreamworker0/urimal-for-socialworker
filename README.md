@@ -18,7 +18,7 @@
 - **`해 주다` 과잉** — "참여해 주셨습니다" → "참여하셨습니다".
 - **사업화 문체·수동태 남발·논리 비약** — 정책 보고서 특유의 딱딱함.
 
-이 36개 패턴은 한덕연 선생님이 **사회복지 현장 문서를 수십 년 검토하며 정리하신 자료**(`docs/urimal_cleaned.md` / `urimal-source.md`)에서 가져왔습니다.
+이 36개 패턴은 한덕연 선생님이 **사회복지 현장 문서를 수십 년 검토하며 정리하신 자료**에서 가져왔습니다. 원천 자료는 [`skills/urimal-for-socialworker/resources/references/urimal-source.md`](skills/urimal-for-socialworker/resources/references/urimal-source.md)에 들어 있습니다.
 
 ---
 
@@ -131,11 +131,14 @@ claude
 
 **방법 C — Claude Code Plugin Marketplace**
 
-본 리포는 `.claude-plugin/plugin.json` 매니페스트를 포함합니다. Marketplace 채널을 통해 설치 시:
+본 리포는 플러그인 매니페스트(`.claude-plugin/plugin.json`)와 마켓플레이스 카탈로그(`.claude-plugin/marketplace.json`)를 함께 포함합니다. 설치 스크립트를 돌리지 않고 Claude Code에서 바로 설치할 수 있습니다.
 
 ```
+/plugin marketplace add dreamworker0/urimal-for-socialworker
 /plugin install urimal-for-socialworker@dreamworker0
 ```
+
+첫 줄로 마켓플레이스를 등록하고, 둘째 줄로 플러그인을 설치합니다. 스킬(`urimal-for-socialworker`·`kordoc`)과 슬래시 커맨드(`/윤문`·`/윤문-redo`)가 함께 들어오며, kordoc 빌드 산출물도 동봉돼 있어 별도 빌드가 필요 없습니다. 이후 업데이트는 `/plugin marketplace update dreamworker0`로 받습니다.
 
 ### 5. HWP·HWPX 입력
 
@@ -152,7 +155,16 @@ claude
 
 ### 6. 결과 확인
 
-`_workspace/{날짜-번호}/` 폴더에 누적됩니다.
+`_workspace/{날짜-번호}/` 폴더에 누적됩니다. **모드에 따라 산출물이 다릅니다.**
+
+**Fast 모드 (디폴트)** — 중간 산출물 없이 두 개만 남습니다.
+
+| 파일 | 내용 |
+|------|------|
+| `01_input.txt` | 원문 그대로 |
+| `final.md` | 최종 윤문본. 본문 끝 `<!-- URIMAL-SUMMARY -->` 주석에 변경률·품질 등급·우리말 항목 번호가 함께 들어갑니다 (마크다운 뷰어에는 보이지 않음) |
+
+**Strict 모드 (`--strict` 또는 자동 승급)** — 단계별 중간 산출물이 모두 남습니다.
 
 | 파일 | 내용 |
 |------|------|
@@ -165,7 +177,7 @@ claude
 | `final.md` | 최종 윤문본 |
 | `summary.md` | 변경 이유 표 (우리말 항목 번호 포함) |
 
-`summary.md` 예시:
+strict 모드의 `summary.md` 예시:
 
 ```markdown
 ## 윤문 요약
@@ -185,17 +197,20 @@ claude
 
 ## 모델 정책
 
-- **기본값**: `claude-sonnet-4-6` — 6에이전트 파이프라인을 한 번 돌릴 때 모델을 6~10번 호출합니다. Sonnet 4.6도 한국어 윤문 품질 충분.
-- **정밀 모드**: `claude-opus-4-7` — 외부 제출 보고서·시군구 제출 사업계획서 등 중요 문서. 트리거: `/윤문 ... 정밀 모드` 또는 자연어로 "opus로", "최고 품질로".
+- **기본값**: `claude-sonnet-5` — 한국어 윤문 품질에 충분하면서 비용 효율이 좋습니다. Fast 모드는 모델을 1번, strict 모드는 6~10번 호출하므로 특히 strict에서 모델 선택이 비용에 크게 반영됩니다.
+- **정밀 모드**: `claude-opus-5` — 외부 제출 보고서·시군구 제출 사업계획서 등 중요 문서. 트리거: `/윤문 ... 정밀 모드` 또는 자연어로 "opus로", "최고 품질로".
 
 ---
 
-## 4대 철칙
+## 철칙
 
-1. **의미 불변** — 사실·주장·수치·날짜·고유명사·인용은 100% 원문 보존.
+1. **의미 불변** — 사실·주장·수치·날짜·고유명사·기관명·사업명·인용은 100% 원문 보존.
 2. **근거 기반** — 탐지된 span에만 수술적 수정. 탐지 없는 구간은 건드리지 않음.
 3. **장르 유지** — 계획서를 에세이로, 보고서를 칼럼으로 옮기지 않음.
-4. **과윤문 금지** — 변경률 30% 초과 시 경고, 50% 초과 시 강제 중단.
+4. **register 보존** — 합쇼체 입력이면 합쇼체 출력. 사회복지 공문서 표준을 따릅니다.
+5. **차별·시혜 표현(SW-14) 절대 잔존 금지** — 사회복지 도메인의 결정적 실패로 봅니다. Fast 모드에서 잔존이 확인되면 즉시 strict 승급을 권고합니다.
+6. **과윤문 금지** — 변경률 30% 초과 시 경고, 50% 초과 시 강제 중단.
+7. **교육 목적 유지** — 결과물에 우리말 항목 번호와 변경 이유를 반드시 남깁니다.
 
 ## 윤문 대상 제외 (Do-NOT List)
 
@@ -215,7 +230,8 @@ urimal-for-socialworker/
 ├── LICENSE                          # MIT
 ├── CONTRIBUTORS.md
 ├── .claude-plugin/
-│   └── plugin.json                  # Claude Code Plugin 매니페스트
+│   ├── plugin.json                  # Claude Code Plugin 매니페스트
+│   └── marketplace.json             # 마켓플레이스 카탈로그 (/plugin install 용)
 ├── commands/
 │   ├── 윤문.md                      # /윤문 슬래시 커맨드
 │   └── 윤문-redo.md                 # /윤문-redo
@@ -233,8 +249,55 @@ urimal-for-socialworker/
     │       └── prepare_monolith_input.py  # [v2.1] 정량 점수 사전 처리
     └── kordoc/                      # HWP·HWPX 파싱 스킬
         ├── SKILL.md
-        └── scripts/kordoc/          # Node.js 파서 (npm install 필요)
+        └── scripts/kordoc/          # Node.js 파서 (런타임 의존성만 npm install 필요)
+            ├── src/                 # TypeScript 소스
+            ├── dist/                # 빌드 산출물 — 저장소에 동봉 (빌드 불필요)
+            ├── tsconfig.json
+            └── tsup.config.ts       # 소스 수정 시 `npm run build`로 dist 재생성
 ```
+
+---
+
+## v2.1.1 — 설치·실행 결함 수정 (2026-08-15)
+
+기능 추가 없이, **문서가 약속한 대로 실제로 동작하지 않던 부분**을 고쳤습니다.
+
+### 🔧 kordoc이 실행되지 않던 문제
+
+`dist/`를 동봉했다고 안내해 왔지만 실제로는 한 번도 커밋된 적이 없었고(하위 `.gitignore`가 `dist/`를 제외), 설치 스크립트도 빌드를 수행하지 않았으며, 빌드 설정 파일(`tsconfig.json`·`tsup.config.ts`)조차 없어 수동 빌드도 불가능했습니다. **HWP·HWPX 입력이 통째로 동작하지 않는 상태였습니다.**
+
+- 빌드 설정 `tsconfig.json`·`tsup.config.ts` 신규 추가 — `npm run build`로 재현 가능한 빌드
+- 빌드 산출물 `dist/`를 실제로 저장소에 동봉 (설치 환경에 빌드 툴체인을 요구하지 않기 위해)
+- CJS 진입점(`dist/index.cjs`, package.json의 `require` 대상)이 로드 즉시 `ERR_INVALID_ARG_VALUE`로 죽던 버그 수정 — CJS 번들에서 `import.meta.url`이 비어 `createRequire(undefined)`가 되던 문제
+- CLI가 버전을 `0.0.0-dev`로 보고하던 문제 수정 — 빌드 타임 `__KORDOC_VERSION__` 주입 누락
+- `package-lock.json`의 버전이 `2.5.3`으로 `package.json`(2.6.2)과 어긋나 있던 것 정정
+
+### 🔧 플러그인 매니페스트 스키마 오류
+
+`plugin.json`이 스키마를 3군데 위반해 `claude plugin validate`가 실패했습니다.
+
+- `repository`를 객체 → 문자열로 정정
+- `skills`·`commands`를 `{name, path}` 객체 배열로 잘못 선언하던 것 제거 — `skills/`·`commands/` 디렉토리는 규약에 따라 자동 탐색됩니다
+- `.claude-plugin/marketplace.json` 신규 추가 — README가 안내하던 `/plugin install urimal-for-socialworker@dreamworker0`가 실제로 동작하게 됨
+
+### 🔧 kordoc 스킬 문서가 실제 CLI와 불일치
+
+- 하드코딩된 개발자 로컬 경로(`d:\app\urimal\...`) 제거 → 설치 위치 기준 경로 안내
+- 존재하지 않는 `run_command` 도구 → `Bash` 도구로 정정
+- `fill` 명령 예시가 실제 시그니처와 달랐던 것 정정 (`<원본> <출력> --data` → `<템플릿> -f/-j -o`)
+- CLI에 없는 `diff` 하위 명령을 문서화하던 것 제거 (문서 비교는 라이브러리 API 전용)
+
+### 🔄 모델 ID 현행화
+
+`claude-sonnet-4-6` → `claude-sonnet-5`, `claude-opus-4-7` → `claude-opus-5` (6개 파일 12곳).
+
+### 📄 문서 정합성
+
+- 결과물 표를 **Fast / Strict 모드별로 분리** — fast 디폴트인데 strict 산출물만 안내하던 문제
+- README "4대 철칙" → SKILL.md와 동일한 7개 철칙으로 동기화 (register 보존·SW-14 금지 누락분 반영)
+- 존재하지 않는 `docs/urimal_cleaned.md` 참조를 실제 경로로 교체
+- `/윤문-redo`에 **fast run 판별 분기** 추가 — 중간 산출물이 없는 fast 결과에 strict 재호출을 시도하던 문제
+- `plugin.json` description을 v2.1 구조(Fast 디폴트)로 갱신
 
 ---
 
